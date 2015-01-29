@@ -8,12 +8,12 @@ and open the template in the editor.
         <?php
         error_reporting(E_ALL);
         ini_set('display_errors', 1);
-        require_once __DIR__ . '/src/Home.php';
-        require_once __DIR__ . '/src/Homepage.php';
+        require_once '../src/forum/Forum.php';
+        require_once '../src/Homepage.php';
         
-        $oHome = new Home();
+        $oForum = new forum\Forum();
         
-        $oHomepage = new ui\Homepage($oHome);
+        $oHomepage = new ui\Homepage($oForum);
         
         echo $oHomepage->getContent();
         ?>
