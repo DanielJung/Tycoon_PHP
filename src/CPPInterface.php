@@ -15,7 +15,6 @@ class CPPInterface {
     private static $msServer = "http://localhost:8080/master";
     public static function getCPPResult($sUrl, $aData, $sMethod = 'POST') {
         $url = self::$msServer . '/' . $sUrl;
-        echo $url;
         $data = $aData;
         
         // use key 'http' even if you send the request to https://...

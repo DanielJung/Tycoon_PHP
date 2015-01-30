@@ -108,6 +108,6 @@ class User {
     public function Logout() {
         $aData = array('userid' => $this->miID,
             'hash' => $this->msHash);
-        json_decode(CPPInterface::getCPPResult('user/activate', $aData), true);
+        CPPInterface::getCPPResult('user/logout', $aData);
     }
 }
