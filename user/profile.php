@@ -8,13 +8,12 @@ and open the template in the editor.
         <?php
         error_reporting(E_ALL);
         ini_set('display_errors', 1);
-        
-        require_once '../src/newsfeed/Newsfeed.php';
+        require_once '../src/user/Profile.php';
         require_once '../src/Homepage.php';
         
-        $oNewsfeed = new news\Newsfeed();
+        $oProfile = new user\Profile();
         
-        $oHomepage = new ui\Homepage($oNewsfeed);
+        $oHomepage = new ui\Homepage($oProfile);
         
         echo $oHomepage->getContent();
         ?>

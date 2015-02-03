@@ -22,7 +22,7 @@ class Navigation extends SiteInterface {
         $sContent .= "<a href=\"/Tycoon_PHP/\">Home</a>\n";
         $sContent .= "<a href=\"/Tycoon_PHP/forum/\">Forum</a>\n";
         $sContent .= "<a href=\"/Tycoon_PHP/game/\">Game</a>\n";
-        $sContent .= "<a href=\"/Tycoon_PHP/newsfeed/\">News</a>\n";
+        $sContent .= "<a href=\"/Tycoon_PHP/news/\">News</a>\n";
         return $sContent;
     }
 }

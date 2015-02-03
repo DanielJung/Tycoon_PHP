@@ -92,7 +92,6 @@ class User {
         }
         throw new \Exception("Error Register: Email, Password or Passwordrpt not set");
     }
-    
     public function Activate($sCode) {
         if(isset($sCode)) {
             $aData = array('code' => $sCode);
@@ -104,10 +103,19 @@ class User {
         }
         throw new \Exception("Error Activate: Code not set");
     }
-    
     public function Logout() {
         $aData = array('userid' => $this->miID,
             'hash' => $this->msHash);
         CPPInterface::getCPPResult('user/logout', $aData);
+    }
+    public function getPrivateProfile($sName, $sNick, $sGender, $sAge, $sHome, $sWebsite) {
+        $aData = array("id" => $this->getID(), "hash" => $this->getHash(),
+            "name" => $sName, "nick" => $sNick, "gender" => $sGender,
+            "age" => $sAge, "home" => $sHome, "website" => $sWebsite);
+        return json_decode(CPPInterface::getCPPResult('user/profile', $aData), true);
+    }
+    public function getPublicProfile($iUserID) {
+        $aData = array("userid" => $iUserID);
+        return json_decode(CPPInterface::getCPPResult('user/profile', $aData), true);
     }
 }
