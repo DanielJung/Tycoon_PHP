@@ -16,34 +16,53 @@ namespace forum;
 
 require_once __DIR__ . '/../SiteInterface.php';
 require_once __DIR__ . '/../CPPInterface.php';
+require_once __DIR__ . '/Topic.php';
 
 class Forum extends \ui\SiteInterface {
     public function getContent($oUser) {
         $sContent = "";
         //show single forum
-        if(isset($_GET['id'])) {
+        if(isset($_GET['forumid'])) {
+            $oResult = json_decode(\CPPInterface::getCPPResult("forum", 
+                    array("forumid" => $_GET['forumid'])), true);
+            if(isset($oResult["error"])) {
+                return "Error: " . $oResult["error"];
+            }
+            $sContent .= self::getForumContent($oResult["forumid"], $oResult["name"], 
+                        $oResult["description"], $oResult["topics"]);
             
         } else { //shwo all forums
-            $oResult = json_decode(\CPPInterface::getCPPResult("forum", array()), true);
-            $aForums = $oResult["forum"];
-            $sContent.= "<ul style=\"list-style:none;\">";
-            foreach($aForums as $oForum) {
-                $sContent .= "<li>";
-                $sContent .= $this->getForumContent($oForum["forumid"], 
-                        $oForum["name"], $oForum["description"]);
-                $sContent .= "</li>";
+            $aResult = json_decode(\CPPInterface::getCPPResult("forum", array()), true);
+            if(isset($oResult["error"])) {
+                return "Error: " . $oResult["error"];
             }
-            $sContent .= "</ul>";
+            foreach($aResult as $oForum) {
+                $sContent .= self::getForumContent($oForum["forumid"], $oForum["name"], 
+                        $oForum["description"], $oForum["topics"]);
+            }            
         }
         return $sContent;
     }
     
-    public function getForumContent($sForumID, $sForumName, $sForumDescription) {
+    public static function getForumContent($iID, $sName, $sDescription, $aTopics) {
         $sContent = "";
-        
-        $sContent .= "<h1>" . $sForumName . "</h1>";
-        $sContent .= "<p>" . $sForumDescription . "</p>";
-        
+        $sContent .= "<article style=\"border-style:solid; border-width:thin\">";
+        $sContent .= "<a href=\"/Tycoon_PHP/forum/index.php?forumid=" . $iID . "\">";
+        $sContent .= "<h2>" . $sName . "</h2>";
+        $sContent .= "</a>";
+        $sContent .= "<p>" . $sDescription . "</p>";
+        if(count($aTopics)>0) {
+            $sContent .= "<ul>";
+            foreach($aTopics as $oTopic) {
+                $sContent .= "<li>";
+                $sContent .= "<h3>" . Topic::getTopicContent($oTopic["topicid"], $oTopic["name"], 
+                        $oTopic["description"], array()) . "</h3>";
+                $sContent .= "<p>" . $oTopic["description"] . "</p>";
+                $sContent .= "</li>";
+            }
+            $sContent .= "</ul>";
+        }
+        $sContent .= "</article>";
         return $sContent;
     }
 }
